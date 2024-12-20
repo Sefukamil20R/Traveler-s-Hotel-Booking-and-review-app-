@@ -18,7 +18,7 @@ class HotelBookingApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Hotel Booking App',
         theme: ThemeData(primarySwatch: Colors.blue),
-        home: SplashScreen2(), // Set the initial screen
+        home: SplashScreen(), // Set the initial screen
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hotel_booking_app/features/auth/presenation/pages/SignUp_page.dart';
+import 'package:hotel_booking_app/features/auth/presenation/pages/login_page.dart';
 
 class SplashScreen2 extends StatelessWidget {
   @override
@@ -40,7 +41,7 @@ class SplashScreen2 extends StatelessWidget {
                     // Navigate to the next screen
                     Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => SignUpPage()),
+        MaterialPageRoute(builder: (context) => LoginPage()),
       );
                   },
                   style: ElevatedButton.styleFrom(

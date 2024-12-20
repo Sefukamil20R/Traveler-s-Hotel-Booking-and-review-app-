@@ -33,3 +33,12 @@ class SignOutEvent extends AuthEvent {}
 class FetchUserProfileEvent extends AuthEvent {}
 
 class VerifyEmailEvent extends AuthEvent {}
+
+class ResendCodeEvent extends AuthEvent {}
+
+class VerifyCodeEvent extends AuthEvent {
+  final String verificationCode;
+
+  VerifyCodeEvent({required this.verificationCode});
+}
+

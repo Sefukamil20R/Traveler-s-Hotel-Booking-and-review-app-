@@ -41,6 +41,7 @@ class UserProfileFetchedState extends AuthState {
   @override
   List<Object?> get props => [user];
 }
+class CodeResentState extends AuthState {}
 
 class EmailVerifiedState extends AuthState {}
 
