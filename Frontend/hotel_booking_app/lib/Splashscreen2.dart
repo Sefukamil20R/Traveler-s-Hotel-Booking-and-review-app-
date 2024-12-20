@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hotel_booking_app/features/auth/presenation/pages/SignUp_page.dart';
 
 class SplashScreen2 extends StatelessWidget {
   @override
@@ -37,6 +38,10 @@ class SplashScreen2 extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     // Navigate to the next screen
+                    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => SignUpPage()),
+      );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF1E3E62),

@@ -3,19 +3,7 @@ import 'package:hotel_booking_app/Splashscreen2.dart';
 import 'package:hotel_booking_app/features/auth/presenation/pages/login_page.dart';
 import 'package:hotel_booking_app/features/auth/presenation/pages/signup_page.dart';
 
-void main() {
-  runApp(MyApp());
-}
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false, 
-      home: SignUpPage(),
-    );
-  }
-}
 
 class SplashScreen extends StatelessWidget {
   @override
