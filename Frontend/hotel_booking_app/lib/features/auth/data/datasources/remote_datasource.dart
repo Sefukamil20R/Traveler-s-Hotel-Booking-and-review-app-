@@ -21,32 +21,36 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         _firestore = firestore;
 
   @override
-  Future<AuthModel> signUp(String email, String password, String username) async {
-    try {
-      // Create a user in Firebase Auth
-      UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+  
+Future<AuthModel> signUp(String email, String password, String username) async {
+  try {
+    // Create a user in Firebase Auth
+    UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
 
-      // Save additional user data in Firestore
-      await _firestore.collection('users').doc(userCredential.user!.uid).set({
-        'username': username,
-        'email': email,
-        'emailVerified': false,
-      });
+    // Save additional user data in Firestore with a default role
+    await _firestore.collection('users').doc(userCredential.user!.uid).set({
+      'username': username,
+      'email': email,
+      'emailVerified': false,
+      'role': 'user', // Default role assigned here
+    });
 
-      // Return AuthModel
-      return AuthModel(
-        uid: userCredential.user!.uid,
-        email: email,
-        emailVerified: userCredential.user!.emailVerified,
-        username: username,
-      );
-    } catch (e) {
-      throw Exception('Sign Up Failed: $e');
-    }
+    // Return AuthModel
+    return AuthModel(
+      uid: userCredential.user!.uid,
+      email: email,
+      emailVerified: userCredential.user!.emailVerified,
+      username: username,
+    );
+  } catch (e) {
+    throw Exception('Sign Up Failed: $e');
   }
+}
+
+
 
   @override
   Future<AuthModel> signIn(String email, String password) async {
@@ -99,15 +103,25 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     }
   }
 
-  @override
-  Future<void> verifyEmail() async {
-    User? user = _firebaseAuth.currentUser;
+ 
+ @override
+ 
+Future<void> verifyEmail() async {
+  User? user = _firebaseAuth.currentUser;
 
-    if (user == null) {
-      throw Exception('No user logged in');
-    }
-
-    // Send verification email
-    await user.sendEmailVerification();
+  if (user == null) {
+    throw Exception('No user logged in');
   }
+
+  // Reload the user's data to get the latest status
+  await user.reload();
+  user = _firebaseAuth.currentUser; // Update the reference after reload
+
+  // Check if the email is already verified
+  if (!user!.emailVerified) {
+    throw Exception('Email not verified yet. Please check your inbox.');
+  }
+}
+
+
 }

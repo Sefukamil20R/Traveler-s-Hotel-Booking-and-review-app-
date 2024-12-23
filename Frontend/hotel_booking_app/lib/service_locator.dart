@@ -11,6 +11,12 @@ import 'package:hotel_booking_app/features/auth/domain/usecase/get_user_profile.
 import 'package:hotel_booking_app/features/auth/domain/usecase/sign_out_usecase.dart';
 import 'package:hotel_booking_app/features/auth/domain/usecase/verify_email_usecase.dart';
 import 'package:hotel_booking_app/features/auth/presenation/bloc/auth_bloc.dart';
+import 'package:hotel_booking_app/features/role/data/datasource/remotedatasource.dart';
+import 'package:hotel_booking_app/features/role/data/repositories/role_repositoryimpl.dart';
+import 'package:hotel_booking_app/features/role/domain/repository/role_repository.dart';
+import 'package:hotel_booking_app/features/role/domain/usecase/assign_role.dart';
+import 'package:hotel_booking_app/features/role/domain/usecase/fetch_role.dart';
+import 'package:hotel_booking_app/features/role/presentaion/bloc/role_bloc.dart';
 
 final locator = GetIt.instance;
 Future <void> setupLocator() async {
@@ -24,25 +30,39 @@ Future <void> setupLocator() async {
      verifyEmailUseCase: locator()
     
   ));
-  //usecases
-  locator.registerFactory( () => SignupUseCase(locator()));
+  // role _ bloc
+  locator.registerFactory( () => RoleBloc(assignRoleUseCase: locator(), getUserRoleUseCase: locator()));
+
+  //usecases_auth
+  locator.registerFactory( () => SignupUseCase(locator(), locator()));
   locator.registerFactory( () => SignIn(locator()));
   locator.registerFactory( () => SignOut(locator()));
   locator.registerFactory( () => GetUserProfile(locator()));
   locator.registerFactory( () => VerifyEmail(locator())); 
-  //repositories
+  //usecases_role
+  locator.registerFactory( () => AssignRoleUseCase(locator()));
+  locator.registerFactory( () => GetUserRoleUseCase(locator()));
+  //repositories_auth
     locator.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(
     remoteDataSource: locator(),
   ));
-  //datasources
-  // Register FirebaseAuth
-  locator.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
-
-  // Register FirebaseFirestore
-  locator.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
-  //user_datasource
-  locator.registerLazySingleton<RemoteDataSource>(() => RemoteDataSourceImpl(firebaseAuth: locator(), firestore: locator()
+  //repositories_role
+  locator.registerLazySingleton<RoleRepository>(() => RoleRepositoryImpl(
+    remoteDataSource: locator(),
+  ));
+  //datasources_auth
+   locator.registerLazySingleton<RemoteDataSource>(() => RemoteDataSourceImpl(firebaseAuth: locator(), firestore: locator()
    
   ));
+  // Register FirebaseAuth
+  locator.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
+   //datasources_role
+      locator.registerLazySingleton<RoleRemoteDataSource>(() => RoleRemoteDataSource(
+        firestore: locator(),
+      ));
+  // Register FirebaseFirestore
+locator.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
+  
+ 
 
 }

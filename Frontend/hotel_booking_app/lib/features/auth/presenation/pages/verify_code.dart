@@ -258,6 +258,7 @@ import 'package:hotel_booking_app/features/auth/presenation/bloc/auth_bloc.dart'
 import 'package:hotel_booking_app/features/auth/presenation/bloc/auth_event.dart';
 import 'package:hotel_booking_app/features/auth/presenation/bloc/auth_state.dart';
 
+
 class VerifyCodePage extends StatelessWidget {
   final String email;
 
@@ -270,12 +271,16 @@ class VerifyCodePage extends StatelessWidget {
         listener: (context, state) {
           if (state is EmailVerifiedState) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Email verified successfully!')),
+              const SnackBar(content: Text('Email verified successfully!')),
             );
-            Navigator.pop(context); // Navigate back after verification
+            Navigator.pop(context); // Navigate back after successful verification
           } else if (state is AuthErrorState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.errorMessage)),
+            );
+          } else if (state is CodeResentState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Verification code resent.')),
             );
           }
         },
@@ -291,9 +296,9 @@ class VerifyCodePage extends StatelessWidget {
                     'assets/images/verify_email.png', // Add a relevant image asset
                     height: 180,
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   // Title
-                  Text(
+                  const Text(
                     'Verify Your Email',
                     style: TextStyle(
                       fontSize: 28,
@@ -302,37 +307,34 @@ class VerifyCodePage extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   // Instruction Text
-                  Text(
+                  const Text(
                     'We have sent a verification email to:',
                     style: TextStyle(fontSize: 16, color: Colors.grey),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     email,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF1E3E62),
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   // Resend Verification Link
-                  Text(
+                  const Text(
                     'Didn’t receive the OTP?',
                     style: TextStyle(fontSize: 14),
                   ),
                   GestureDetector(
                     onTap: () {
                       context.read<AuthBloc>().add(ResendCodeEvent());
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Verification code resent.')),
-                      );
                     },
-                    child: Text(
+                    child: const Text(
                       'Resend Code',
                       style: TextStyle(
                         fontSize: 14,
@@ -341,23 +343,24 @@ class VerifyCodePage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   // Instruction to Proceed After Verification
-                  Text(
+                  const Text(
                     'Once you verify your email, press the button below to complete the process.',
                     style: TextStyle(fontSize: 14, color: Colors.grey),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   // Verify Button
                   ElevatedButton(
                     onPressed: () {
                       context.read<AuthBloc>().add(VerifyEmailEvent());
                     },
-                    child: Text('I Have Verified My Email'),
+                    child: const Text('I Have Verified My Email'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
-                      padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 32, vertical: 12),
                     ),
                   ),
                 ],
