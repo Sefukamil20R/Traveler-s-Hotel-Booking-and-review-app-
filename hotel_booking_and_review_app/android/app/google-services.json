@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "881780406764",
+    "project_id": "hotel-booking-and-review-app",
+    "storage_bucket": "hotel-booking-and-review-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:881780406764:android:ec1570cdd27b768cd968c9",
+        "android_client_info": {
+          "package_name": "com.example.hotel_booking_and_review_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYdKLK7uUI3CalVpZvU9F39gLROeKgwXg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

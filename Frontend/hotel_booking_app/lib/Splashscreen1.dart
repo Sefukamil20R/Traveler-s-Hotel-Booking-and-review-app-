@@ -6,15 +6,21 @@ import 'package:hotel_booking_app/features/auth/presenation/pages/login_page.dar
 import 'package:hotel_booking_app/features/auth/presenation/pages/signup_page.dart';
 
 
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:hotel_booking_app/Splashscreen2.dart';
 
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Timer(Duration(seconds: 10), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => SplashScreen2()),
-      );
+    // Using addPostFrameCallback to navigate after the current frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Timer(Duration(seconds: 10), () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => SplashScreen2()),
+        );
+      });
     });
 
     return Scaffold(
@@ -23,7 +29,6 @@ class SplashScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Replace with your logo
             Icon(
               Icons.hotel,
               size: 100,

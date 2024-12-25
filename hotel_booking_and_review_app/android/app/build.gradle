@@ -1,0 +1,45 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin" // Flutter plugin
+}
+
+android {
+    namespace = "com.example.hotel_booking_and_review_app"
+    compileSdkVersion 34 // Use the latest stable compileSdkVersion
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    defaultConfig {
+        applicationId = "com.example.hotel_booking_and_review_app"
+        minSdkVersion 23 // Firebase minimum supported SDK
+        targetSdkVersion 34 // Match latest compileSdk
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.debug
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}
+
+dependencies {
+    implementation platform('com.google.firebase:firebase-bom:32.0.0') // Firebase BOM for version alignment
+    implementation 'com.google.firebase:firebase-auth' // Firebase Auth
+    implementation 'com.google.firebase:firebase-firestore' // Firestore
+}
+
+apply plugin: 'com.google.gms.google-services'
