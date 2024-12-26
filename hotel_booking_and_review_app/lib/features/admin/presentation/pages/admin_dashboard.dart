@@ -12,7 +12,7 @@ class AdminDashboard extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-      Navigator.pushReplacementNamed(context, '/home');
+      Navigator.pushNamed(context, '/home');
           },
         ),
         backgroundColor: Color(0xFF1E3E62),
@@ -36,28 +36,28 @@ class AdminDashboard extends StatelessWidget {
                 title: 'Add Hotel',
                 icon: Icons.add,
                 onTap: () {
-                  // Implement navigation or action here
+      Navigator.pushNamed(context, '/addhotel');
                 },
               ),
               AdminOptionCard(
                 title: 'Edit Hotel',
                 icon: Icons.edit,
                 onTap: () {
-                  // Implement navigation or action here
+      Navigator.pushNamed(context, '/edithotel');
                 },
               ),
               AdminOptionCard(
                 title: 'Delete Hotel',
                 icon: Icons.delete,
                 onTap: () {
-                  // Implement navigation or action here
+      Navigator.pushNamed(context, '/deletehotel');
                 },
               ),
               AdminOptionCard(
                 title: 'Assign Role',
                 icon: Icons.person_add,
                 onTap: () {
-                  // Implement navigation or action here
+              Navigator.pushNamed(context, '/assignrole');
                 },
               ),
             ],

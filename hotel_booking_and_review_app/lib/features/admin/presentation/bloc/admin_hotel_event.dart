@@ -16,23 +16,25 @@ class AddHotelEvent extends AdminHotelEvent {
   List<Object?> get props => [hotel];
 }
 
-class EditHotelEvent extends AdminHotelEvent {
-  final AdminHotel hotel;
+// class EditHotelEvent extends AdminHotelEvent {
+//   final AdminHotel hotel;
 
-  EditHotelEvent(this.hotel);
+//   EditHotelEvent(this.hotel);
 
-  @override
-  List<Object?> get props => [hotel];
-}
+//   @override
+//   List<Object?> get props => [hotel];
+// }
 
-class DeleteHotelEvent extends AdminHotelEvent {
-  final String hotelId;
+// class DeleteHotelEvent extends AdminHotelEvent {
+//   final String hotelId;
 
-  DeleteHotelEvent(this.hotelId);
+//   DeleteHotelEvent(this.hotelId);
 
-  @override
-  List<Object?> get props => [hotelId];
-}
+//   @override
+//   List<Object?> get props => [hotelId];
+// }
+class FetchHotelsEvent extends AdminHotelEvent {}
+
 class AssignRoleEvent extends AdminHotelEvent {
   final String userId;
   final String role;
@@ -41,4 +43,13 @@ class AssignRoleEvent extends AdminHotelEvent {
 
   @override
   List<Object?> get props => [userId, role];
+}
+class EditHotelEvent extends AdminHotelEvent {
+  final AdminHotel hotel;
+  EditHotelEvent(this.hotel);
+}
+
+class DeleteHotelEvent extends AdminHotelEvent {
+  final String hotelId;
+  DeleteHotelEvent(this.hotelId);
 }

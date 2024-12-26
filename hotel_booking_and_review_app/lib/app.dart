@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hotel_booking_and_review_app/features/admin/domain/entities/admin_hotel.dart';
+import 'package:hotel_booking_and_review_app/features/admin/presentation/bloc/admin_hotel_bloc.dart';
+import 'package:hotel_booking_and_review_app/features/admin/presentation/pages/add_hotel_page.dart';
 import 'package:hotel_booking_and_review_app/features/admin/presentation/pages/admin_dashboard.dart';
+import 'package:hotel_booking_and_review_app/features/admin/presentation/pages/assign_role_page.dart';
+import 'package:hotel_booking_and_review_app/features/admin/presentation/pages/delete_hotel_page.dart';
+import 'package:hotel_booking_and_review_app/features/admin/presentation/pages/edit_hotel_page.dart';
 import 'package:hotel_booking_and_review_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:hotel_booking_and_review_app/features/auth/presentation/pages/login_page.dart';
 import 'package:hotel_booking_and_review_app/features/role/presentation/bloc/role_bloc.dart';
@@ -20,7 +26,10 @@ class HotelBookingApp extends StatelessWidget {
          BlocProvider<RoleBloc>(
           create: (context) => locator<RoleBloc>(),
         ),
-
+        BlocProvider<AdminHotelBloc>(
+          create: (context) => locator<AdminHotelBloc>(),
+        ),
+       
       ],
       child:MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -31,7 +40,11 @@ class HotelBookingApp extends StatelessWidget {
           '/': (context) => SplashScreen(),
           '/admin_dashboard': (context) => AdminDashboard(), // Add AdminDashboard here
           '/login': (context) => LoginPage(),
-          '/home': (context) => HomePage()
+          '/home': (context) => HomePage(),
+          '/addhotel': (context) => AddHotelPage(),
+          '/deletehotel': (context) => DeleteHotelPage(),
+          '/edithotel': (context) => EditHotelPage( ),
+          '/assignrole': (context) => AssignRolePage(),
         },
       ),
     );

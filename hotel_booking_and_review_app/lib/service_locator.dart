@@ -8,6 +8,7 @@ import 'package:hotel_booking_and_review_app/features/admin/domain/repository/ad
 import 'package:hotel_booking_and_review_app/features/admin/domain/usecase/admin_add_hotel.dart';
 import 'package:hotel_booking_and_review_app/features/admin/domain/usecase/admin_delete_hotel.dart';
 import 'package:hotel_booking_and_review_app/features/admin/domain/usecase/admin_edit_hotel.dart';
+import 'package:hotel_booking_and_review_app/features/admin/domain/usecase/admin_get_hotels.dart';
 import 'package:hotel_booking_and_review_app/features/admin/domain/usecase/assign_admin_role.dart';
 import 'package:hotel_booking_and_review_app/features/admin/presentation/bloc/admin_hotel_bloc.dart';
 import 'package:hotel_booking_and_review_app/features/auth/data/datasources/remote_datasource.dart';
@@ -40,6 +41,10 @@ import 'package:hotel_booking_and_review_app/features/user/domain/usecase/book_h
 import 'package:hotel_booking_and_review_app/features/user/domain/usecase/get_booking_summury.dart';
 import 'package:hotel_booking_and_review_app/features/user/domain/usecase/get_user_bookings.dart';
 import 'package:hotel_booking_and_review_app/features/user/presentation/bloc/user_bloc.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart'; 
+
+
 
 final locator = GetIt.instance;
 Future <void> setupLocator() async {
@@ -62,7 +67,7 @@ Future <void> setupLocator() async {
   //user_bloc
   locator.registerFactory( () => UserBloc(bookHotelUseCase: locator(), addToFavoritesUseCase: locator(), processPaymentUseCase: locator(), getBookingSummaryUseCase: locator(), getUserBookingsUseCase: locator()));
    //admin_bloc
-  locator.registerFactory( () => AdminHotelBloc(addHotel: locator(), editHotel: locator(), deleteHotel: locator(), assignRole: locator()));
+  locator.registerFactory( () => AdminHotelBloc(addHotel: locator(), editHotel: locator(), deleteHotel: locator(), assignRole: locator(), getHotels: locator()));
   //  usecases_auth
   locator.registerFactory( () => SignupUseCase(locator(), locator()));
   locator.registerFactory( () => SignIn(locator()));
@@ -86,6 +91,7 @@ Future <void> setupLocator() async {
   locator.registerFactory( () => AdminEditHotel(locator()));
   locator.registerFactory( () => AdminDeleteHotel(locator()));
   locator.registerFactory( () => AssignRole(locator()));  
+  locator.registerFactory( () => AdminGetHotels(locator()));
   // repositories_hotel
   locator.registerLazySingleton<HotelRepository>(() => HotelRepositoryImpl(
     remoteDataSource: locator(),
@@ -94,10 +100,22 @@ Future <void> setupLocator() async {
   locator.registerLazySingleton<UserRepository>(() => UserRepositoryImpl(
     remoteDataSource: locator(),
   ));  
-  // repositories_admin
-  locator.registerLazySingleton<AdminHotelRepository>(() => AdminHotelRepositoryImpl(
-    remoteDataSource: locator(), firestore: locator(),
-  ));  
+   // Initialize SQLite database
+ // Register SQLite Database first
+final database = await _initDatabase();
+locator.registerLazySingleton<Database>(() => database);
+
+// Register FirebaseFirestore next
+locator.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
+
+// Then register the repository implementation
+locator.registerLazySingleton<AdminHotelRepository>(
+  () => AdminHotelRepositoryImpl(
+    database: locator<Database>(),
+    firestore: locator<FirebaseFirestore>(),
+  ),
+);
+
   
   //repositories_auth
     locator.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(
@@ -107,6 +125,9 @@ Future <void> setupLocator() async {
   locator.registerLazySingleton<RoleRepository>(() => RoleRepositoryImpl(
     remoteDataSource: locator(),
   ));
+  //repositoy_admin
+    locator.registerLazySingleton<AdminHotelRemoteDataSource>(() => AdminHotelRemoteDataSourceImpl( firestore: locator()));
+
   //datasources_auth
    locator.registerLazySingleton<RemoteDataSource>(() => RemoteDataSourceImpl(firebaseAuth: locator(), firestore: locator()
    
@@ -117,12 +138,40 @@ Future <void> setupLocator() async {
       locator.registerLazySingleton<RoleRemoteDataSource>(() => RoleRemoteDataSource(
         firestore: locator(),
       ));
-  // Register FirebaseFirestore
-locator.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
+
+
+
+  
   // datasources_hotel
   locator.registerLazySingleton<HotelRemoteDataSource>(() => HotelRemoteDataSourceImpl( firestore: locator()));
   //datasources_user
   locator.registerLazySingleton<UserRemoteDataSource>(() => UserRemoteDataSourceImpl( firestore: locator(), auth: locator())); 
   //datasources_admin
-  locator.registerLazySingleton<AdminHotelRemoteDataSource>(() => AdminHotelRemoteDataSourceImpl( firestore: locator()));
+}
+
+// Function to initialize SQLite database
+Future<Database> _initDatabase() async {
+  final databasesPath = await getDatabasesPath();
+  String path = join(databasesPath, 'hotel_booking.db');
+  return await openDatabase(
+    path,
+    version: 1,
+    onCreate: (db, version) async {
+      await db.execute('''
+        CREATE TABLE hotels (
+          id TEXT PRIMARY KEY,
+          name TEXT,
+          imageUrl TEXT,
+          price REAL,
+          rating REAL,
+          location TEXT,
+          description TEXT,
+          amenities TEXT,
+          gallery TEXT,
+          latitude REAL,
+          longitude REAL
+        )
+      ''');
+    },
+  );
 }

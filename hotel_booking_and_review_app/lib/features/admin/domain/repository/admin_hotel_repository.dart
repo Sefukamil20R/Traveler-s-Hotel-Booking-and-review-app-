@@ -6,5 +6,5 @@ abstract class AdminHotelRepository {
   Future<void> editHotel(AdminHotel hotel);
   Future<void> deleteHotel(String hotelId);
   Future<void> assignRole(String userId, String role);
-  
+  Future<List<AdminHotel>> getHotels();
 }

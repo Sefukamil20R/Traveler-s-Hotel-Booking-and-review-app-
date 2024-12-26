@@ -16,6 +16,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SignOut signOutUseCase;
   final GetUserProfile getUserProfileUseCase;
   final VerifyEmail verifyEmailUseCase;
+  
 
   AuthBloc({
     required this.signupUseCase,
