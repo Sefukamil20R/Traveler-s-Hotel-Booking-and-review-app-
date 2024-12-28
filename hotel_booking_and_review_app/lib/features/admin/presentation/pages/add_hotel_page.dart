@@ -45,7 +45,7 @@ class _AddHotelPageState extends State<AddHotelPage> {
       );
 
       // Call the BLoC to add the hotel
-context.read<AdminHotelBloc>().add(AddHotelEvent(hotel));
+      context.read<AdminHotelBloc>().add(AddHotelEvent(hotel));
 
       // Show confirmation message
       ScaffoldMessenger.of(context).showSnackBar(

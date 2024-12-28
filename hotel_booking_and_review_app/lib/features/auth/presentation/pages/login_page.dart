@@ -450,11 +450,13 @@ class LoginPage extends StatelessWidget {
       if (roleState is RoleFetchedState) {
         if (roleState.role == 'admin') {
           // Add a delay before navigation
-          Future.delayed(Duration.zero, () {
-            Navigator.pushNamed(context, '/admin_dashboard');
-          });
-        } else {
-          // Handle non-admin navigation here
+          Future.microtask(() {
+                  Navigator.pushNamed(context, '/admin_dashboard');
+                });
+        } else if(roleState.role == 'user') {
+           Future.microtask(() {
+                  Navigator.pushNamed(context, '/home');
+                });
         }
       }
       return SizedBox.shrink(); // Return a widget when no role state is found

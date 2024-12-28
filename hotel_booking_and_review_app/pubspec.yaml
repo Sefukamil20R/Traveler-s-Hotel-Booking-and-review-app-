@@ -48,6 +48,9 @@ dependencies:
   image_picker: ^1.1.2
   path_provider: ^2.1.5
   sqflite: ^2.0.0+4
+  geolocator: ^9.0.0  # Ensure you have the correct version
+  flutter_stripe: ^11.3.0
+
 
 dev_dependencies:
   flutter_test:

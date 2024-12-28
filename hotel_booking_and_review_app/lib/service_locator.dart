@@ -25,6 +25,7 @@ import 'package:hotel_booking_and_review_app/features/hotel/data/repository/hote
 import 'package:hotel_booking_and_review_app/features/hotel/domain/repository/hotel_repository.dart';
 import 'package:hotel_booking_and_review_app/features/hotel/domain/usecase/get_hotel_details.dart';
 import 'package:hotel_booking_and_review_app/features/hotel/domain/usecase/get_hotel_listings.dart';
+import 'package:hotel_booking_and_review_app/features/hotel/domain/usecase/get_nearby_hotel.dart';
 import 'package:hotel_booking_and_review_app/features/hotel/presentation/bloc/hotel_bloc.dart';
 import 'package:hotel_booking_and_review_app/features/role/data/datasource/remotedatasource.dart';
 import 'package:hotel_booking_and_review_app/features/role/data/repositories/role_repositoryimpl.dart';
@@ -63,7 +64,7 @@ Future <void> setupLocator() async {
   locator.registerFactory( () => RoleBloc(assignRoleUseCase: locator(), getUserRoleUseCase: locator()));
   //hotel_bloc
 
-  locator.registerFactory( () => HotelBloc(getHotelListings: locator(), getHotelDetails: locator()));
+  locator.registerFactory( () => HotelBloc(getNearbyHotels: locator(), getHotels: locator(),getHotelDetails: locator()));
   //user_bloc
   locator.registerFactory( () => UserBloc(bookHotelUseCase: locator(), addToFavoritesUseCase: locator(), processPaymentUseCase: locator(), getBookingSummaryUseCase: locator(), getUserBookingsUseCase: locator()));
    //admin_bloc
@@ -80,6 +81,7 @@ Future <void> setupLocator() async {
   //usecases_hotel
   locator.registerFactory( () => GetHotelListings(locator()));
   locator.registerFactory( () => GetHotelDetails(locator()));
+  locator.registerFactory( () => GetNearbyHotels(locator()));
   // usecases_user
   locator.registerFactory( () => BookHotel(locator()));
   locator.registerFactory( () => AddToFavorites(locator()));
@@ -92,17 +94,7 @@ Future <void> setupLocator() async {
   locator.registerFactory( () => AdminDeleteHotel(locator()));
   locator.registerFactory( () => AssignRole(locator()));  
   locator.registerFactory( () => AdminGetHotels(locator()));
-  // repositories_hotel
-  locator.registerLazySingleton<HotelRepository>(() => HotelRepositoryImpl(
-    remoteDataSource: locator(),
-  ));
-  // repositories_user
-  locator.registerLazySingleton<UserRepository>(() => UserRepositoryImpl(
-    remoteDataSource: locator(),
-  ));  
-   // Initialize SQLite database
- // Register SQLite Database first
-final database = await _initDatabase();
+  final database = await _initDatabase();
 locator.registerLazySingleton<Database>(() => database);
 
 // Register FirebaseFirestore next
@@ -115,6 +107,18 @@ locator.registerLazySingleton<AdminHotelRepository>(
     firestore: locator<FirebaseFirestore>(),
   ),
 );
+  // repositories_hotel
+
+  locator.registerLazySingleton<HotelRepository>(() => HotelRepositoryImpl(database: locator()
+    
+  ));
+  // repositories_user
+  locator.registerLazySingleton<UserRepository>(() => UserRepositoryImpl(
+    remoteDataSource: locator(),
+  ));  
+   // Initialize SQLite database
+ // Register SQLite Database first
+
 
   
   //repositories_auth
