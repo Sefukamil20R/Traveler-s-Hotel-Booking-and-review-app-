@@ -84,8 +84,8 @@ class _AddHotelPageState extends State<AddHotelPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Hotel",style: TextStyle(color: Color(0xFF1E3E62)),),
-        backgroundColor: Colors.white, // Use your color
+        title: Text("Add Hotel",style: TextStyle(color: Colors.white),),
+        backgroundColor: Color(0xFF1E3E62) , // Use your color
       ),
       body: SingleChildScrollView(
         child: Padding(

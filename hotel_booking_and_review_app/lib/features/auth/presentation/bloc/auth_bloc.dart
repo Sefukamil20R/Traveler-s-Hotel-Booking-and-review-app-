@@ -6,7 +6,6 @@ import 'package:hotel_booking_and_review_app/features/auth/domain/usecase/Signup
 import 'package:hotel_booking_and_review_app/features/auth/domain/usecase/get_user_profile.dart';
 import 'package:hotel_booking_and_review_app/features/auth/domain/usecase/sign_out_usecase.dart';
 import 'package:hotel_booking_and_review_app/features/auth/domain/usecase/verify_email_usecase.dart';
-
 import 'auth_event.dart';
 import 'auth_state.dart';
 

@@ -48,7 +48,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Future<void> _onAddToFavoritesEvent(AddToFavoritesEvent event, Emitter<UserState> emit) async {
     emit(UserLoading());
     try {
-      await addToFavoritesUseCase.call(event.userId, event.hotelId);
+      await addToFavoritesUseCase.call(event.userId,event.hotelId);
       emit(UserSuccess(message: "Hotel added to favorites!"));
     } catch (e) {
       emit(UserFailure(message: e.toString()));

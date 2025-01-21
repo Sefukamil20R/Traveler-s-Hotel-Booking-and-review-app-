@@ -1,10 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hotel_booking_and_review_app/features/auth/presentation/pages/login_page.dart';
+import 'package:hotel_booking_and_review_app/features/auth/presentation/pages/profile_page.dart';
+import 'package:hotel_booking_and_review_app/features/hotel/domain/entitiy/hotel_entitiy.dart';
 import 'package:hotel_booking_and_review_app/features/hotel/presentation/bloc/hotel_bloc.dart';
 import 'package:hotel_booking_and_review_app/features/hotel/presentation/bloc/hotel_event.dart';
 import 'package:hotel_booking_and_review_app/features/hotel/presentation/bloc/hotel_state.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:hotel_booking_and_review_app/features/user/presentation/pages/Bookings.dart';
+import 'package:hotel_booking_and_review_app/features/user/presentation/pages/saving.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,6 +17,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
+  List<Hotel> allHotels = [];
+  List<Hotel> filteredHotels = [];
+
   @override
   void initState() {
     super.initState();
@@ -50,6 +58,49 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     }
   }
 
+  void _filterHotels(String query) {
+    setState(() {
+      filteredHotels = allHotels
+          .where((hotel) => hotel.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
+  }
+
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SavedPage()),
+        );
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => TripsPage()),
+        );
+        break;
+      case 3:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ProfilePage()),
+        );
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,9 +110,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         elevation: 0,
         title: Row(
           children: [
-            Image.asset('assets/images/verify_email.png', height: 40), // Replace with your logo
+            ClipOval(
+              child: Image.asset('assets/images/logo.png', height: 40, width: 40, fit: BoxFit.cover), // Replace with your logo
+            ),
             SizedBox(width: 8),
-            Text('Staysphere', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+            Text('StaySphere', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
             Spacer(),
             IconButton(
               icon: Icon(Icons.login, color: Colors.white),
@@ -82,6 +135,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: TextField(
+                onChanged: _filterHotels,
                 decoration: InputDecoration(
                   hintText: 'Search',
                   border: InputBorder.none,
@@ -104,16 +158,18 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 if (state is HotelLoading) {
                   return Center(child: CircularProgressIndicator());
                 } else if (state is HotelLoaded) {
-                  if (state.hotels.isEmpty) {
+                  allHotels = state.hotels;
+                  filteredHotels = filteredHotels.isEmpty ? allHotels : filteredHotels;
+                  if (filteredHotels.isEmpty) {
                     return Center(child: Text('No recommended hotels available.'));
                   }
                   return SizedBox(
                     height: 240, // Adjusted height for cards
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: state.hotels.length,
+                      itemCount: filteredHotels.length,
                       itemBuilder: (context, index) {
-                        final hotel = state.hotels[index];
+                        final hotel = filteredHotels[index];
                         return GestureDetector(
                           onTap: () {
                             Navigator.pushNamed(
@@ -127,13 +183,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                             location: hotel.location,
                             price: hotel.price.toString(),
                             imageUrl: hotel.gallery.isNotEmpty ? hotel.gallery[0] : '',
-                            rating: hotel.rating, onTap: () { 
+                            rating: hotel.rating,
+                            onTap: () {
                               Navigator.pushNamed(
                                 context,
                                 '/hotelDetails',
                                 arguments: hotel.id,
                               );
-                             },
+                            },
                           ),
                         );
                       },
@@ -155,13 +212,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   if (state is HotelLoading) {
                     return Center(child: CircularProgressIndicator());
                   } else if (state is HotelLoaded) {
-                    if (state.hotels.isEmpty) {
+                    allHotels = state.hotels;
+                    filteredHotels = filteredHotels.isEmpty ? allHotels : filteredHotels;
+                    if (filteredHotels.isEmpty) {
                       return Center(child: Text('No nearby hotels available.'));
                     }
                     return ListView.builder(
-                      itemCount: state.hotels.length,
+                      itemCount: filteredHotels.length,
                       itemBuilder: (context, index) {
-                        final hotel = state.hotels[index];
+                        final hotel = filteredHotels[index];
                         return GestureDetector(
                           onTap: () {
                             Navigator.pushNamed(
@@ -199,11 +258,26 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex, // To keep track of the current selected tab
+        onTap: _onItemTapped,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.explore), label: 'Explore'),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite_border), label: 'Favorite'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite_border),
+            label: 'Saved',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.business_center),
+            label: 'Bookings',
+          ),
+          
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'My account',
+          ),
         ],
         backgroundColor: Colors.white,
         elevation: 4,
@@ -213,7 +287,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     );
   }
 }
-
 
 class RecommendedHotelCard extends StatelessWidget {
   final String name;
@@ -270,7 +343,7 @@ class RecommendedHotelCard extends StatelessWidget {
                     right: 8,
                     child: CircleAvatar(
                       backgroundColor: Colors.white.withOpacity(0.6),
-                      child: Icon(Icons.favorite_border, color: Colors.red),
+                      child: Icon(Icons.favorite, color: Colors.red),
                     ),
                   ),
                 ],

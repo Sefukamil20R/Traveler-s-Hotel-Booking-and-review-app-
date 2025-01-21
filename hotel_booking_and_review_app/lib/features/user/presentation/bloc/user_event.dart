@@ -33,10 +33,10 @@ class AddToFavoritesEvent extends UserEvent {
   final String userId;
   final String hotelId;
 
-  const AddToFavoritesEvent({required this.userId, required this.hotelId});
+  const AddToFavoritesEvent({required this.userId,  required this.hotelId});
 
   @override
-  List<Object> get props => [userId, hotelId];
+  List<Object> get props => [ hotelId];
 }
 
 // Event to process payment

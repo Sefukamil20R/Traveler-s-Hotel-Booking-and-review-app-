@@ -7,10 +7,11 @@ class AdminDashboard extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Center(
-          child: Text('Admin Dashboard'),
+          child: Text('Admin Dashboard' , style: TextStyle(color: Colors.white),),
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
+          color: Colors.white,
           onPressed: () {
       Navigator.pushNamed(context, '/home');
           },
