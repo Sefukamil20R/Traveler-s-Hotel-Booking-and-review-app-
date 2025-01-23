@@ -10,7 +10,6 @@ import 'package:hotel_booking_and_review_app/splashscreen2.dart';
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Using addPostFrameCallback to navigate after the current frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Timer(Duration(seconds: 10), () {
         Navigator.pushReplacement(

@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // For storing user details
+import 'package:cloud_firestore/cloud_firestore.dart'; 
 import '../models/auth_model.dart';
 
 abstract class RemoteDataSource {
@@ -35,7 +35,7 @@ Future<AuthModel> signUp(String email, String password, String username) async {
       'username': username,
       'email': email,
       'emailVerified': false,
-      'role': 'user', // Default role assigned here
+      'role': 'user', 
     });
 
     // Return AuthModel

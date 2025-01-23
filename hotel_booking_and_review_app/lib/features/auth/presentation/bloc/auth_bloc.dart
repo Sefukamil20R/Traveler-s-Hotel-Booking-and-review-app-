@@ -29,19 +29,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignOutEvent>(_onSignOutEvent);
     on<FetchUserProfileEvent>(_onFetchUserProfileEvent);
     on<VerifyEmailEvent>(_onVerifyEmailEvent);
-    on<ResendCodeEvent>(_onResendCodeEvent); 
+    on<ResendCodeEvent>(_onResendCodeEvent);
+    on<ResetAuthStateEvent>(_onResetAuthStateEvent); 
 
-    // on<VerifyCodeEvent>(_onVerifyCodeEvent); // New event handler
+
   }
 
-  // Future<void> _onSignUpEvent(SignUpEvent event, Emitter<AuthState> emit) async {
-  //   emit(AuthLoadingState());
-  //   final result = await signupUseCase.call(event.user);
-  //   result.fold(
-  //     (failure) => emit(AuthErrorState(errorMessage: failure)),
-  //     (user) => emit(SignedUpState(user: user)),
-  //   );
-  // }
+  
   Future<void> _onSignUpEvent(SignUpEvent event, Emitter<AuthState> emit) async {
   emit(AuthLoadingState());
   
@@ -50,7 +44,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   result.fold(
     (failure) => emit(AuthErrorState(errorMessage: failure)),
     (user) {
-      emit(SignedUpState(user: user)); // Emit success state after signup and role assignment
+      emit(SignedUpState(user: user)); 
     },
   );
 }
@@ -80,22 +74,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
   }
 
-  // Future<void> _onVerifyEmailEvent(VerifyEmailEvent event, Emitter<AuthState> emit) async {
-  //   emit(AuthLoadingState());
-  //   await verifyEmailUseCase.call();
-  //   emit(EmailVerifiedState());
-  // }
-
-  // Future<void> _onResendCodeEvent(ResendCodeEvent event, Emitter<AuthState> emit) async {
-  //   emit(AuthLoadingState());
-  //   try {
-  //     // Call Firebase API to resend verification code
-  //     await FirebaseAuth.instance.currentUser?.sendEmailVerification();
-  //     emit(CodeResentState());
-  //   } catch (e) {
-  //     emit(AuthErrorState(errorMessage: e.toString()));
-  //   }
-  // }
+  
   Future<void> _onResendCodeEvent(ResendCodeEvent event, Emitter<AuthState> emit) async {
   emit(AuthLoadingState());
   try {
@@ -127,7 +106,7 @@ Future<void> _onVerifyEmailEvent(VerifyEmailEvent event, Emitter<AuthState> emit
 
     // Reload the user to get the latest emailVerified status
     await user.reload();
-    user = FirebaseAuth.instance.currentUser; // Update the reference after reload
+    user = FirebaseAuth.instance.currentUser; 
 
     if (user!.emailVerified) {
       // Update the Firestore document with emailVerified = true
@@ -154,69 +133,12 @@ Future<void> _updateEmailVerifiedStatus(String uid) async {
     print("Error updating emailVerified field: $e");
   }
 }
+Future<void> _onResetAuthStateEvent(ResetAuthStateEvent event, Emitter<AuthState> emit) async {
+    emit(AuthInitialState());
+  }
 
 
 
 }
 
-// class AuthBloc extends Bloc<AuthEvent, AuthState> {
-//   final SignupUseCase signupUseCase;
-//   final SignIn signInUseCase;
-//   final SignOut signOutUseCase;
-//   final GetUserProfile getUserProfileUseCase;
-//   final VerifyEmail verifyEmailUseCase;
 
-//   AuthBloc({
-//     required this.signupUseCase,
-//     required this.signInUseCase,
-//     required this.signOutUseCase,
-//     required this.getUserProfileUseCase,
-//     required this.verifyEmailUseCase,
-//   }) : super(AuthInitialState()) {
-//     on<SignUpEvent>(_onSignUpEvent);
-//     on<SignInEvent>(_onSignInEvent);
-//     on<SignOutEvent>(_onSignOutEvent);
-//     on<FetchUserProfileEvent>(_onFetchUserProfileEvent);
-//     on<VerifyEmailEvent>(_onVerifyEmailEvent);
-
-//   }
-
-//   Future<void> _onSignUpEvent(SignUpEvent event, Emitter<AuthState> emit) async {
-//     emit(AuthLoadingState());
-//     final result = await signupUseCase.call(event.user);
-//     result.fold(
-//       (failure) => emit(AuthErrorState(errorMessage: failure)),
-//       (user) => emit(SignedUpState(user: user)),
-//     );
-//   }
-
-//   Future<void> _onSignInEvent(SignInEvent event, Emitter<AuthState> emit) async {
-//     emit(AuthLoadingState());
-//     final result = await signInUseCase.call(email: event.email, password: event.password);
-//     result.fold(
-//       (failure) => emit(AuthErrorState(errorMessage: failure)),
-//       (user) => emit(SignedInState(user: user)),
-//     );
-//   }
-
-//   Future<void> _onSignOutEvent(SignOutEvent event, Emitter<AuthState> emit) async {
-//     emit(AuthLoadingState());
-//     await signOutUseCase.call();
-//     emit(SignedOutState());
-//   }
-
-//   Future<void> _onFetchUserProfileEvent(FetchUserProfileEvent event, Emitter<AuthState> emit) async {
-//     emit(AuthLoadingState());
-//     final result = await getUserProfileUseCase.call();
-//     result.fold(
-//       (failure) => emit(AuthErrorState(errorMessage: failure)),
-//       (user) => emit(UserProfileFetchedState(user: user)),
-//     );
-//   }
-
-//   Future<void> _onVerifyEmailEvent(VerifyEmailEvent event, Emitter<AuthState> emit) async {
-//     emit(AuthLoadingState());
-//     await verifyEmailUseCase.call();
-//     emit(EmailVerifiedState());
-//   }
-// }

@@ -39,7 +39,8 @@ class _HotelEditFormPageState extends State<HotelEditFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit Hotel"),
+        title: Text("Edit Hotel", style: TextStyle(color: Colors.white)),
+        backgroundColor: Color(0xFF1E3E62),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),

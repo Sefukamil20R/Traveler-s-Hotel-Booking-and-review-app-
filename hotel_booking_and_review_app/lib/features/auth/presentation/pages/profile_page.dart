@@ -5,6 +5,7 @@ import 'package:hotel_booking_and_review_app/features/auth/presentation/bloc/aut
 import 'package:hotel_booking_and_review_app/features/auth/presentation/bloc/auth_state.dart';
 import 'package:hotel_booking_and_review_app/features/auth/presentation/bloc/auth_event.dart';
 import 'package:hotel_booking_and_review_app/features/auth/presentation/pages/login_page.dart';
+import 'package:hotel_booking_and_review_app/features/user/presentation/pages/Bookings.dart';
 import 'package:hotel_booking_and_review_app/features/user/presentation/pages/saving.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -87,7 +88,7 @@ class ProfilePage extends StatelessWidget {
               leading: Icon(Icons.history),
               title: Text('Booking History'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => SavedPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => TripsPage()));
               },
             ),
             ListTile(

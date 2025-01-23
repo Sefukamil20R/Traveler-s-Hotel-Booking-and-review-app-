@@ -53,7 +53,7 @@ class _TripsPageState extends State<TripsPage> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Trips' , style: TextStyle(color: Colors.white),),
+          title: Text('Bookings' , style: TextStyle(color: Colors.white),),
           backgroundColor: Color(0xFF1E3E62),
           bottom: TabBar(
             indicator: BoxDecoration(

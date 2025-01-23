@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hotel_booking_and_review_app/app.dart';
 import 'package:hotel_booking_and_review_app/service_locator.dart';
-import 'firebase_options.dart';  // If you're using the generated file for Firebase options
+import 'firebase_options.dart';  
 // import 'package:flutter_stripe/flutter_stripe.dart'; // Import Stripe package
 
 Future<void> main() async {

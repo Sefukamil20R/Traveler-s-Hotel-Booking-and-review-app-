@@ -23,7 +23,8 @@ class _AssignRolePageState extends State<AssignRolePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Assign Role"),
+        title: Text("Assign Role", style: TextStyle(color: Colors.white)),
+        backgroundColor: Color(0xFF1E3E62),
       ),
       body: BlocConsumer<AdminHotelBloc, AdminHotelState>(
         listener: (context, state) {

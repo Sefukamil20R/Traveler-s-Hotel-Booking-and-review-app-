@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hotel_booking_and_review_app/features/hotel/domain/entitiy/hotel_entitiy.dart';
+import 'package:hotel_booking_and_review_app/features/user/presentation/pages/paymentsummury.dart';
 
 class BookingSummaryPage extends StatelessWidget {
   final Hotel hotel;
@@ -105,8 +106,8 @@ class BookingSummaryPage extends StatelessWidget {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        // Navigate to payment page or handle payment
-                      },
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => AddCardScreen()));
+                     },
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(double.infinity, 50),
                         backgroundColor: Color(0xFF002B5C), // Navy Blue

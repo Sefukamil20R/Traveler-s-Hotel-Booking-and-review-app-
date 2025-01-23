@@ -11,7 +11,7 @@ class AuthModel extends UserEntity {
           email: email,
           emailVerified: emailVerified,
           username: username,
-          password: '', // Password is never exposed in AuthModel
+          password: '', 
         );
 
   factory AuthModel.fromJson(Map<String, dynamic> json, String uid) {

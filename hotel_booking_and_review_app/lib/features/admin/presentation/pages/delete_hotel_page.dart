@@ -10,7 +10,8 @@ class DeleteHotelPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Delete Hotel"),
+        title: Text("Delete Hotel" , style: TextStyle(color: Colors.white)),
+        backgroundColor: Color(0xFF1E3E62),
       ),
       body: BlocConsumer<AdminHotelBloc, AdminHotelState>(
   listener: (context, state) {

@@ -11,7 +11,8 @@ class EditHotelPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit Hotel"),
+        title: Text("Edit Hotel", style: TextStyle(color: Colors.white)),
+        backgroundColor:  Color(0xFF1E3E62),
       ),
       body: BlocBuilder<AdminHotelBloc, AdminHotelState>(
         builder: (context, state) {
@@ -28,7 +29,7 @@ class EditHotelPage extends StatelessWidget {
                 return Card(
                   margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: ListTile(
-                    title: Text(hotel.name),
+                    title: Text(hotel.name , style: TextStyle(color: Color(0xFF1E3E62))),
                     subtitle: Text(hotel.location),
                     onTap: () {
                       print('Selected Hotel: ${hotel.toString()}');

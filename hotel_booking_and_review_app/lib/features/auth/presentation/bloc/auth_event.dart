@@ -42,3 +42,4 @@ class VerifyCodeEvent extends AuthEvent {
   VerifyCodeEvent({required this.verificationCode});
 }
 
+class ResetAuthStateEvent extends AuthEvent {}
